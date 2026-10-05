@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Interaktif - Perangkat Pemrosesan Komputer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glow-box {
+            box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.3);
+        }
+        .glow-cpu {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+        .glow-gpu {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+        .glow-ram {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+        .glow-storage {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        .data-packet {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: all 0.5s ease-in-out;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white tracking-wide">Lab Hardware Komputer</h1>
+                    <p class="text-xs text-slate-400">Media Interaktif & Simulasi Perangkat Pemrosesan</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <nav class="flex items-center bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 text-xs sm:text-sm font-medium">
+                <button onclick="switchTab('materi')" id="btn-materi" class="tab-btn px-4 py-2 rounded-lg text-white bg-blue-600 transition-all flex items-center gap-2 shadow-md">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Materi Lengkap</span>
+                </button>
+                <button onclick="switchTab('simulasi')" id="btn-simulasi" class="tab-btn px-4 py-2 rounded-lg text-slate-300 hover:text-white transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-flask"></i>
+                    <span>Lab Percobaan</span>
+                </button>
+                <button onclick="switchTab('analogi')" id="btn-analogi" class="tab-btn px-4 py-2 rounded-lg text-slate-300 hover:text-white transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Simulasi Dapur</span>
+                </button>
+                <button onclick="switchTab('kuis')" id="btn-kuis" class="tab-btn px-4 py-2 rounded-lg text-slate-300 hover:text-white transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Kuis Interaktif</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto w-full px-4 lg:px-8 py-8 flex-1">
+
+        <!-- SECTION 1: MATERI LENGKAP -->
+        <section id="tab-materi" class="space-y-8">
+            <!-- Header Banner -->
+            <div class="relative bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 p-6 lg:p-8 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-slate-100 pointer-events-none">
+                    <i class="fa-solid fa-microchip text-[200px]"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs font-semibold uppercase tracking-wider mb-3">
+                        Modul Pembelajaran Utama
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3">Perangkat Pemrosesan (Processing Device)</h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Pelajari komponen hardware komputer yang bertugas mengolah, memproses, menyimpan, dan menyajikan data secara komprehensif tanpa ringkasan.
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button onclick="speakFullMateri()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition-all shadow-md">
+                            <i class="fa-solid fa-volume-high"></i> Dengarkan Penjelasan Suara
+                        </button>
+                        <button onclick="stopSpeech()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl text-xs font-semibold transition-all">
+                            <i class="fa-solid fa-stop"></i> Stop
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Material Quick Selector Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="#sec-cpu" class="p-4 bg-slate-900 hover:bg-slate-800 border border-blue-500/30 rounded-2xl transition-all flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 text-blue-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                        1
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">CPU</h4>
+                        <p class="text-xs text-slate-400">Otak Komputer</p>
+                    </div>
+                </a>
+                <a href="#sec-gpu" class="p-4 bg-slate-900 hover:bg-slate-800 border border-purple-500/30 rounded-2xl transition-all flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/40 text-purple-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                        2
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">GPU</h4>
+                        <p class="text-xs text-slate-400">Pemroses Grafis</p>
+                    </div>
+                </a>
+                <a href="#sec-ram" class="p-4 bg-slate-900 hover:bg-slate-800 border border-emerald-500/30 rounded-2xl transition-all flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                        3
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">RAM</h4>
+                        <p class="text-xs text-slate-400">Memori Sementara</p>
+                    </div>
+                </a>
+                <a href="#sec-storage" class="p-4 bg-slate-900 hover:bg-slate-800 border border-amber-500/30 rounded-2xl transition-all flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-amber-600/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+                        4
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Storage</h4>
+                        <p class="text-xs text-slate-400">Penyimpanan Utama</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 1. CPU -->
+            <div id="sec-cpu" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-24">
+                <div class="flex items-center gap-4 border-b border-slate-800 pb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-600/20 border border-blue-500/40 text-blue-400 flex items-center justify-center text-2xl font-bold shadow-lg">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-white">1. CPU — Central Processing Unit</h3>
+                        <p class="text-sm text-blue-400 font-medium">Otak Utama Pemrosesan Sistem</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50 space-y-3">
+                        <h4 class="text-base font-bold text-blue-300 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info"></i> Pengertian
+                        </h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong>CPU (Central Processing Unit)</strong> adalah komponen komputer yang bertugas memproses instruksi dan mengolah data. CPU sering disebut sebagai <strong>“otak komputer”</strong> karena hampir semua perintah yang dijalankan komputer diproses oleh CPU.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50 space-y-3">
+                        <h4 class="text-base font-bold text-blue-300 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders"></i> Fungsi CPU
+                        </h4>
+                        <ul class="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                            <li>Mengolah data dan instruksi.</li>
+                            <li>Menjalankan perintah dari software.</li>
+                            <li>Melakukan perhitungan matematika dan logika.</li>
+                            <li>Mengatur jalannya berbagai proses komputer.</li>
+                            <li>Berkomunikasi dengan komponen lain seperti RAM, storage, dan perangkat input/output.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Example Card -->
+                <div class="bg-blue-950/40 border border-blue-800/50 p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center gap-4">
+                    <div class="p-3 bg-blue-600/20 rounded-xl text-blue-400 text-xl font-bold">
+                        <i class="fa-solid fa-keyboard"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-sm font-bold text-blue-200">Contoh Alur Eksekusi CPU:</h5>
+                        <p class="text-xs text-slate-300 mt-1">
+                            Ketika kita membuka Microsoft Word dan mengetik:
+                        </p>
+                        <div class="mt-2 flex flex-wrap items-center gap-2 text-xs font-mono text-blue-300 font-semibold">
+                            <span class="px-2 py-1 bg-slate-800 rounded border border-slate-700">Keyboard</span>
+                            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                            <span class="px-2 py-1 bg-blue-600/40 border border-blue-500 rounded text-white">CPU memproses</span>
+                            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                            <span class="px-2 py-1 bg-slate-800 rounded border border-slate-700">RAM</span>
+                            <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                            <span class="px-2 py-1 bg-slate-800 rounded border border-slate-700">Monitor menampilkan tulisan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. GPU -->
+            <div id="sec-gpu" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-24">
+                <div class="flex items-center gap-4 border-b border-slate-800 pb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-600/20 border border-purple-500/40 text-purple-400 flex items-center justify-center text-2xl font-bold shadow-lg">
+                        <i class="fa-solid fa-display"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-white">2. GPU — Graphics Processing Unit</h3>
+                        <p class="text-sm text-purple-400 font-medium">Spesialis Pemrosesan Tampilan & Grafis Visual</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50 space-y-3">
+                        <h4 class="text-base font-bold text-purple-300 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info"></i> Pengertian
+                        </h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong>GPU (Graphics Processing Unit)</strong> adalah komponen yang dirancang khusus untuk memproses dan menghasilkan tampilan grafis.
+                            GPU sangat penting ketika komputer menjalankan pekerjaan yang membutuhkan pengolahan gambar dalam jumlah besar.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50 space-y-3">
+                        <h4 class="text-base font-bold text-purple-300 flex items-center gap-2">
+                            <i class="fa-solid fa-gears"></i> Fungsi GPU
+                        </h4>
+                        <ul class="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                            <li>Mengolah gambar dan video.</li>
+                            <li>Menghasilkan tampilan grafis pada monitor.</li>
+                            <li>Memproses animasi dan grafis 3D.</li>
+                            <li>Membantu menjalankan game.</li>
+                            <li>Mempercepat pekerjaan desain, editing video, dan aplikasi grafis tertentu.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Contoh Penggunaan GPU -->
+                <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/60">
+                    <h5 class="text-sm font-bold text-purple-300 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-gamepad"></i> Contoh Penggunaan GPU:
+                    </h5>
+                    <p class="text-xs text-slate-400 mb-3">GPU bekerja lebih berat ketika kita:</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 text-xs">
+                        <div class="p-3 bg-purple-950/40 border border-purple-800/50 rounded-xl text-center flex flex-col items-center gap-2">
+                            <i class="fa-solid fa-gamepad text-purple-400 text-xl"></i>
+                            <span class="font-medium text-slate-200">Bermain game 3D 🎮</span>
+                        </div>
+                        <div class="p-3 bg-purple-950/40 border border-purple-800/50 rounded-xl text-center flex flex-col items-center gap-2">
+                            <i class="fa-solid fa-film text-purple-400 text-xl"></i>
+                            <span class="font-medium text-slate-200">Mengedit video 🎬</span>
+                        </div>
+                        <div class="p-3 bg-purple-950/40 border border-purple-800/50 rounded-xl text-center flex flex-col items-center gap-2">
+                            <i class="fa-solid fa-palette text-purple-400 text-xl"></i>
+                            <span class="font-medium text-slate-200">Membuat desain grafis 🎨</span>
+                        </div>
+                        <div class="p-3 bg-purple-950/40 border border-purple-800/50 rounded-xl text-center flex flex-col items-center gap-2">
+                            <i class="fa-solid fa-cube text-purple-400 text-xl"></i>
+                            <span class="font-medium text-slate-200">Membuat animasi 3D</span>
+                        </div>
+                        <div class="p-3 bg-purple-950/40 border border-purple-800/50 rounded-xl text-center flex flex-col items-center gap-2">
+                            <i class="fa-solid fa-cubes-stacked text-purple-400 text-xl"></i>
+                            <span class="font-medium text-slate-200">Menggunakan aplikasi 3D</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Perbedaan CPU dan GPU -->
+                <div class="p-5 bg-purple-950/30 border border-purple-800/60 rounded-2xl">
+                    <h5 class="text-sm font-bold text-amber-300 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-lightbulb"></i>💡 Perbedaan CPU dan GPU
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-300 mt-2">
+                        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-700">
+                            <strong class="text-blue-400 block mb-1">CPU (Central Processing Unit)</strong>
+                            Serbaguna dan menangani berbagai jenis tugas komputer.
+                        </div>
+                        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-700">
+                            <strong class="text-purple-400 block mb-1">GPU (Graphics Processing Unit)</strong>
+                            Dirancang khusus untuk menangani pemrosesan grafis secara cepat dan paralel.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. RAM -->
+            <div id="sec-ram" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-24">
+                <div class="flex items-center gap-4 border-b border-slate-800 pb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-2xl font-bold shadow-lg">
+                        <i class="fa-solid fa-memory"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-white">3. RAM — Random Access Memory</h3>
+                        <p class="text-sm text-emerald-400 font-medium">Memori Kerja Sementara Berkecepatan Tinggi</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50 space-y-3">
+                        <h4 class="text-base font-bold text-emerald-300 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info"></i> Pengertian
+                        </h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            <strong>RAM (Random Access Memory)</strong> adalah memori yang digunakan komputer untuk menyimpan data dan program yang sedang digunakan sementara.
+                            <br><br>
+                            RAM bersifat <strong>sementara (volatile)</strong>. Artinya, data yang ada di RAM akan hilang ketika komputer dimatikan.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50 space-y-3">
+                        <h4 class="text-base font-bold text-emerald-300 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Fungsi RAM
+                        </h4>
+                        <ul class="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                            <li>Menyimpan data sementara.</li>
+                            <li>Menyimpan program yang sedang dijalankan.</li>
+                            <li>Membantu CPU mengakses data dengan cepat.</li>
+                            <li>Memungkinkan komputer menjalankan beberapa aplikasi sekaligus.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Contoh Multitasking & Kapasitas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-950/30 border border-emerald-800/50 p-5 rounded-2xl space-y-2">
+                        <h5 class="text-sm font-bold text-emerald-200 flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group"></i> Contoh Penggunaan RAM
+                        </h5>
+                        <p class="text-xs text-slate-300">Misalnya kita membuka aplikasi secara bersamaan:</p>
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            <span class="px-3 py-1 bg-emerald-900/60 border border-emerald-600/40 rounded-lg text-xs font-semibold text-emerald-200">Chrome</span>
+                            <span class="px-3 py-1 bg-emerald-900/60 border border-emerald-600/40 rounded-lg text-xs font-semibold text-emerald-200">Word</span>
+                            <span class="px-3 py-1 bg-emerald-900/60 border border-emerald-600/40 rounded-lg text-xs font-semibold text-emerald-200">Excel</span>
+                            <span class="px-3 py-1 bg-emerald-900/60 border border-emerald-600/40 rounded-lg text-xs font-semibold text-emerald-200">Canva</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">
+                            Keempat aplikasi tersebut membutuhkan RAM untuk menyimpan data yang sedang digunakan. Jika RAM terlalu kecil, komputer dapat terasa lambat atau tersendat ketika banyak aplikasi dibuka.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-800/40 border border-slate-700/60 p-5 rounded-2xl space-y-2">
+                        <h5 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-database"></i> Kapasitas RAM
+                        </h5>
+                        <p class="text-xs text-slate-300">RAM biasanya memiliki kapasitas:</p>
+                        <div class="flex flex-wrap items-center gap-1 text-xs font-mono font-bold text-emerald-400">
+                            <span class="px-2 py-1 bg-slate-800 rounded">4 GB</span> →
+                            <span class="px-2 py-1 bg-slate-800 rounded">8 GB</span> →
+                            <span class="px-2 py-1 bg-slate-800 rounded">16 GB</span> →
+                            <span class="px-2 py-1 bg-slate-800 rounded">32 GB</span> →
+                            <span class="px-2 py-1 bg-slate-800 rounded">64 GB</span>, dsb.
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed pt-1">
+                            Semakin besar RAM tidak selalu berarti komputer otomatis lebih cepat, tetapi kapasitas yang lebih besar memungkinkan lebih banyak data/program aktif ditampung secara bersamaan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Storage Device -->
+            <div id="sec-storage" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 scroll-mt-24">
+                <div class="flex items-center gap-4 border-b border-slate-800 pb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-600/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl font-bold shadow-lg">
+                        <i class="fa-solid fa-hard-drive"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-white">4. Storage Device</h3>
+                        <p class="text-sm text-amber-400 font-medium">Perangkat Penyimpanan Jangka Panjang (Non-Volatile)</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/50">
+                    <h4 class="text-base font-bold text-amber-300 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-circle-info"></i> Pengertian
+                    </h4>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        <strong>Storage device (perangkat penyimpanan)</strong> adalah perangkat yang digunakan untuk menyimpan data dan program dalam jangka panjang. Berbeda dengan RAM, data pada storage tetap tersimpan meskipun komputer dimatikan.
+                    </p>
+                </div>
+
+                <h4 class="text-lg font-bold text-white pt-2">Contoh Storage Device & Jenisnya:</h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- HDD -->
+                    <div class="p-5 bg-slate-800/40 border border-slate-700/60 rounded-2xl space-y-3">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">💾</span>
+                            <div>
+                                <h5 class="text-base font-bold text-amber-200">A. HDD — Hard Disk Drive</h5>
+                                <p class="text-xs text-slate-400">Penyimpanan Magnetik</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300">HDD menggunakan piringan magnetik yang berputar untuk menyimpan data.</p>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <strong class="text-amber-400 block">Fungsi:</strong>
+                            <ul class="list-disc list-inside space-y-0.5">
+                                <li>Menyimpan sistem operasi.</li>
+                                <li>Menyimpan aplikasi.</li>
+                                <li>Menyimpan dokumen.</li>
+                                <li>Menyimpan foto, video, dan musik.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- SSD -->
+                    <div class="p-5 bg-slate-800/40 border border-slate-700/60 rounded-2xl space-y-3">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">⚡</span>
+                            <div>
+                                <h5 class="text-base font-bold text-amber-200">B. SSD — Solid State Drive</h5>
+                                <p class="text-xs text-slate-400">Penyimpanan Memori Flash</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300">SSD menggunakan memori flash untuk menyimpan data dan tidak memiliki piringan yang berputar.</p>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <strong class="text-amber-400 block">Fungsi:</strong>
+                            <ul class="list-disc list-inside space-y-0.5">
+                                <li>Menyimpan sistem operasi dan aplikasi.</li>
+                                <li>Menyimpan dokumen dan file.</li>
+                                <li>Membuat proses membaca dan menulis data lebih cepat dibandingkan HDD pada banyak kondisi.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Flashdisk -->
+                    <div class="p-5 bg-slate-800/40 border border-slate-700/60 rounded-2xl space-y-3">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🔌</span>
+                            <div>
+                                <h5 class="text-base font-bold text-amber-200">C. Flashdisk</h5>
+                                <p class="text-xs text-slate-400">Penyimpanan Portabel USB</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300">Perangkat penyimpanan berukuran kecil yang mudah dibawa.</p>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <strong class="text-amber-400 block">Fungsi:</strong>
+                            <ul class="list-disc list-inside space-y-0.5">
+                                <li>Memindahkan file.</li>
+                                <li>Menyimpan dokumen, foto, video, dan data lainnya.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Memory Card -->
+                    <div class="p-5 bg-slate-800/40 border border-slate-700/60 rounded-2xl space-y-3">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">📱</span>
+                            <div>
+                                <h5 class="text-base font-bold text-amber-200">D. Memory Card</h5>
+                                <p class="text-xs text-slate-400">Penyimpanan Kompak Perangkat</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300">Media penyimpanan kecil yang banyak digunakan pada perangkat portabel.</p>
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <strong class="text-amber-400 block">Banyak digunakan pada:</strong>
+                            <ul class="list-disc list-inside space-y-0.5">
+                                <li>Kamera</li>
+                                <li>Smartphone</li>
+                                <li>Tablet</li>
+                                <li>Perangkat elektronik lainnya.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Bagaimana Keempat Komponen Bekerja Bersama -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center font-bold text-xl">
+                        🔄
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-extrabold text-white">Bagaimana Keempat Komponen Ini Bekerja Bersama?</h3>
+                        <p class="text-xs text-slate-400">Alur Sinergi Sistem Komputer saat Menjalankan Perintah</p>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-300">
+                    Contohnya, ketika siswa membuka aplikasi <strong>Microsoft Word</strong>:
+                </p>
+
+                <!-- Step-by-step Flow -->
+                <div class="relative pl-6 border-l-2 border-indigo-500/40 space-y-6 my-4">
+                    <!-- Step 1 -->
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold">1</div>
+                        <h5 class="text-sm font-bold text-amber-300">SSD / HDD (Storage Device)</h5>
+                        <p class="text-xs text-slate-300 mt-1">⬇️ Menyimpan aplikasi Microsoft Word secara permanen.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">2</div>
+                        <h5 class="text-sm font-bold text-emerald-300">RAM</h5>
+                        <p class="text-xs text-slate-300 mt-1">⬇️ Menampung data Word yang sedang digunakan agar mudah diakses.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">3</div>
+                        <h5 class="text-sm font-bold text-blue-300">CPU</h5>
+                        <p class="text-xs text-slate-300 mt-1">⬇️ Memproses perintah ketikan dan pengolahan data.</p>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold">4</div>
+                        <h5 class="text-sm font-bold text-purple-300">GPU</h5>
+                        <p class="text-xs text-slate-300 mt-1">⬇️ Membantu menghasilkan tampilan grafis antarmuka Word.</p>
+                    </div>
+                    <!-- Step 5 -->
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-0 w-6 h-6 rounded-full bg-pink-600 text-white flex items-center justify-center text-xs font-bold">5</div>
+                        <h5 class="text-sm font-bold text-pink-300">Monitor</h5>
+                        <p class="text-xs text-slate-300 mt-1">⬇️ Menampilkan hasil dokumen Word kepada pengguna.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Cara Mudah Mengingat & Analogi Dapur -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Summary Table -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        🧠 Cara Mudah Mengingat (Tabel Peran)
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-300 border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase bg-slate-800/50">
+                                    <th class="p-3">Komponen</th>
+                                    <th class="p-3">Peran Sederhana</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 font-medium">
+                                <tr>
+                                    <td class="p-3 font-bold text-blue-400 flex items-center gap-2">
+                                        🧠 CPU
+                                    </td>
+                                    <td class="p-3">Mengolah</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-purple-400 flex items-center gap-2">
+                                        🎨 GPU
+                                    </td>
+                                    <td class="p-3">Mengolah grafis</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-emerald-400 flex items-center gap-2">
+                                        🧾 RAM
+                                    </td>
+                                    <td class="p-3">Menampung sementara</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-amber-400 flex items-center gap-2">
+                                        💾 Storage
+                                    </td>
+                                    <td class="p-3">Menyimpan jangka panjang</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Kitchen Analogy -->
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        🍳 Analogi Sederhana Dapur
+                    </h3>
+                    <p class="text-xs text-slate-400">Bayangkan komputer seperti sebuah dapur restoran:</p>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="p-3 bg-slate-800/60 border border-slate-700/60 rounded-xl flex items-center gap-3">
+                            <span class="text-xl">👨‍🍳</span>
+                            <div>
+                                <strong class="text-blue-300 block">CPU = Koki Utama</strong>
+                                Koki yang mengolah makanan dan meracik resep utama.
+                            </div>
+                        </div>
+                        <div class="p-3 bg-slate-800/60 border border-slate-700/60 rounded-xl flex items-center gap-3">
+                            <span class="text-xl">🍽️</span>
+                            <div>
+                                <strong class="text-purple-300 block">GPU = Koki Khusus Penyajian/Tampilan</strong>
+                                Koki khusus yang menangani estetika, hiasan, dan penyajian tampilan piring.
+                            </div>
+                        </div>
+                        <div class="p-3 bg-slate-800/60 border border-slate-700/60 rounded-xl flex items-center gap-3">
+                            <span class="text-xl">🔪</span>
+                            <div>
+                                <strong class="text-emerald-300 block">RAM = Meja Kerja Koki</strong>
+                                Meja kerja tempat menaruh bahan-bahan masakan yang sedang diolah saat itu.
+                            </div>
+                        </div>
+                        <div class="p-3 bg-slate-800/60 border border-slate-700/60 rounded-xl flex items-center gap-3">
+                            <span class="text-xl">🏬</span>
+                            <div>
+                                <strong class="text-amber-300 block">Storage = Lemari/Gudang Penyimpanan</strong>
+                                Lemari atau gudang bahan makanan untuk menyimpan stok dalam jangka panjang.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: LAB PERCOBAAN SIMULASI -->
+        <section id="tab-simulasi" class="hidden space-y-8">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-semibold uppercase">
+                            Media Percobaan Interaktif
+                        </span>
+                        <h2 class="text-2xl font-extrabold text-white mt-1">Simulator Eksekusi & Bottleneck Komputer</h2>
+                        <p class="text-xs text-slate-400">Atur spesifikasi komputer dan uji coba berbagai beban pekerjaan untuk melihat alur kerja data secara nyata!</p>
+                    </div>
+                    <button onclick="startSimulation()" class="px-5 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-lg flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-play"></i> Jalankan Simulasi
+                    </button>
+                </div>
+
+                <!-- Simulation Configuration Control Panel -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
+                    <!-- Config 1: Task Selection -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-300">1. Beban Tugas (Software):</label>
+                        <select id="sim-task" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500">
+                            <option value="word">Ketik Microsoft Word (Ringan)</option>
+                            <option value="multi">Multitasking (Chrome + Word + Excel + Canva)</option>
+                            <option value="game">Bermain Game 3D Berat (Grafis Tinggi)</option>
+                            <option value="video">Render Editing Video 4K (CPU + GPU Heavy)</option>
+                        </select>
+                    </div>
+
+                    <!-- Config 2: RAM Size -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-400">2. Kapasitas RAM:</label>
+                        <select id="sim-ram" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            <option value="4">4 GB (Sangat Kecil)</option>
+                            <option value="8" selected>8 GB (Cukup Standard)</option>
+                            <option value="16">16 GB (Besar / Smooth)</option>
+                            <option value="32">32 GB (Sangat Besar)</option>
+                        </select>
+                    </div>
+
+                    <!-- Config 3: Storage Type -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-amber-400">3. Jenis Storage:</label>
+                        <select id="sim-storage" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                            <option value="hdd">HDD Magnetik (Lambat)</option>
+                            <option value="ssd" selected>SSD Flash (Sangat Cepat)</option>
+                        </select>
+                    </div>
+
+                    <!-- Config 4: GPU Type -->
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-purple-400">4. Perangkat GPU:</label>
+                        <select id="sim-gpu" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+                            <option value="integrated">GPU Terintegrasi (Standard/Biasa)</option>
+                            <option value="dedicated" selected>GPU Dedicated (Kuat 3D/Editing)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Interactive Visual Pipeline Board -->
+                <div class="relative bg-slate-950 rounded-3xl p-6 border border-slate-800 min-h-[380px] flex flex-col justify-between overflow-hidden">
+                    <div class="flex justify-between items-center text-xs text-slate-400 border-b border-slate-800 pb-2">
+                        <span>Papan Visualisasi Jalur Data Komputer</span>
+                        <span id="sim-status-text" class="text-blue-400 font-semibold">Status: Siap Dimulai</span>
+                    </div>
+
+                    <!-- Diagram Components Nodes -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 my-6 relative z-10">
+                        <!-- Node Storage -->
+                        <div id="node-storage" class="bg-slate-900/90 border-2 border-amber-500/30 p-4 rounded-2xl flex flex-col items-center text-center transition-all">
+                            <div class="text-3xl text-amber-400 mb-2">💾</div>
+                            <h4 class="text-xs font-bold text-white">STORAGE</h4>
+                            <span id="label-storage-type" class="text-[10px] text-amber-300 font-mono">SSD Active</span>
+                            <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                                <div id="bar-storage" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                            <span id="val-storage" class="text-[10px] text-slate-400 mt-1">Read Rate: 0 MB/s</span>
+                        </div>
+
+                        <!-- Data Flow Arrow 1 -->
+                        <div class="hidden lg:flex items-center justify-center text-slate-600 text-xl">
+                            <i id="arrow-1" class="fa-solid fa-angles-right transition-colors"></i>
+                        </div>
+
+                        <!-- Node RAM -->
+                        <div id="node-ram" class="bg-slate-900/90 border-2 border-emerald-500/30 p-4 rounded-2xl flex flex-col items-center text-center transition-all">
+                            <div class="text-3xl text-emerald-400 mb-2">🧾</div>
+                            <h4 class="text-xs font-bold text-white">RAM</h4>
+                            <span id="label-ram-cap" class="text-[10px] text-emerald-300 font-mono">8 GB Capacity</span>
+                            <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                                <div id="bar-ram" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                            <span id="val-ram" class="text-[10px] text-slate-400 mt-1">Penggunaan: 0%</span>
+                        </div>
+
+                        <!-- Data Flow Arrow 2 -->
+                        <div class="hidden lg:flex items-center justify-center text-slate-600 text-xl">
+                            <i id="arrow-2" class="fa-solid fa-angles-right transition-colors"></i>
+                        </div>
+
+                        <!-- Node CPU -->
+                        <div id="node-cpu" class="bg-slate-900/90 border-2 border-blue-500/30 p-4 rounded-2xl flex flex-col items-center text-center transition-all">
+                            <div class="text-3xl text-blue-400 mb-2">🧠</div>
+                            <h4 class="text-xs font-bold text-white">CPU</h4>
+                            <span class="text-[10px] text-blue-300 font-mono">Central Processing</span>
+                            <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                                <div id="bar-cpu" class="bg-blue-500 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                            <span id="val-cpu" class="text-[10px] text-slate-400 mt-1">Beban CPU: 0%</span>
+                        </div>
+
+                        <!-- Data Flow Arrow 3 -->
+                        <div class="hidden lg:flex items-center justify-center text-slate-600 text-xl">
+                            <i id="arrow-3" class="fa-solid fa-angles-right transition-colors"></i>
+                        </div>
+
+                        <!-- Node GPU -->
+                        <div id="node-gpu" class="bg-slate-900/90 border-2 border-purple-500/30 p-4 rounded-2xl flex flex-col items-center text-center transition-all">
+                            <div class="text-3xl text-purple-400 mb-2">🎨</div>
+                            <h4 class="text-xs font-bold text-white">GPU</h4>
+                            <span id="label-gpu-type" class="text-[10px] text-purple-300 font-mono">Dedicated GPU</span>
+                            <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                                <div id="bar-gpu" class="bg-purple-500 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                            <span id="val-gpu" class="text-[10px] text-slate-400 mt-1">Beban Grafis: 0%</span>
+                        </div>
+
+                        <!-- Output Monitor -->
+                        <div id="node-monitor" class="bg-slate-900/90 border-2 border-pink-500/30 p-4 rounded-2xl flex flex-col items-center text-center transition-all sm:col-span-2 lg:col-span-1">
+                            <div class="text-3xl text-pink-400 mb-2">🖥️</div>
+                            <h4 class="text-xs font-bold text-white">MONITOR</h4>
+                            <span class="text-[10px] text-pink-300 font-mono">Tampilan Layar</span>
+                            <div id="sim-screen-output" class="w-full h-8 mt-2 bg-slate-950 rounded flex items-center justify-center text-[10px] text-slate-500 font-mono px-1">
+                                [Layar Mati]
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Dynamic Feedback & Bottleneck Report -->
+                    <div id="sim-diagnostic-box" class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-stethoscope text-indigo-400"></i> Laporan Diagnosa Hasil Percobaan:
+                            </span>
+                            <span id="sim-speed-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400">Kecepatan: Normal</span>
+                        </div>
+                        <p id="sim-diagnostic-text" class="text-slate-400 leading-relaxed">
+                            Klik tombol <strong>"Jalankan Simulasi"</strong> di atas untuk melihat bagaimana komponen saling bertukar data dan menangani beban pekerjaan yang dipilih!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SIMULASI DAPUR INTERAKTIF -->
+        <section id="tab-analogi" class="hidden space-y-8">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-6">
+                <div>
+                    <span class="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-xs font-semibold uppercase">
+                        Mode Visual Analogi
+                    </span>
+                    <h2 class="text-2xl font-extrabold text-white mt-1">Simulasi Restoran Dapur Komputer</h2>
+                    <p class="text-xs text-slate-400">Memahami peran CPU, GPU, RAM, dan Storage dengan simulasi koki restoran memasak makanan!</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Kitchen Controls -->
+                    <div class="bg-slate-800/50 p-5 rounded-2xl border border-slate-700/60 space-y-4">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-utensils text-amber-400"></i> Pesan Makanan Restoran
+                        </h4>
+                        <p class="text-xs text-slate-300">Pilih pesanan pelanggan untuk melihat interaksi staf dapur:</p>
+
+                        <div class="space-y-2">
+                            <button onclick="runKitchenOrder('word')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition-all flex items-center justify-between">
+                                <span>📄 Pesan Roti Tawar (Word)</span>
+                                <span class="text-emerald-400 font-semibold">Mudah</span>
+                            </button>
+                            <button onclick="runKitchenOrder('multi')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition-all flex items-center justify-between">
+                                <span>🍱 Pesan Paket Prasmanan (Multitasking)</span>
+                                <span class="text-amber-400 font-semibold">Sedang</span>
+                            </button>
+                            <button onclick="runKitchenOrder('game')" class="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 transition-all flex items-center justify-between">
+                                <span>🎂 Pesan Kue Pengantin 3D Mewah (Game 3D)</span>
+                                <span class="text-purple-400 font-semibold">Rumit</span>
+                            </button>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-700 text-xs text-slate-400 leading-relaxed">
+                            💡 <strong>Eksperimen:</strong> Perhatikan bagaimana Koki Khusus Plating (GPU) sangat sibuk ketika pesanan kue mewah 3D dibuat!
+                        </div>
+                    </div>
+
+                    <!-- Kitchen Visual Area -->
+                    <div class="lg:col-span-2 bg-slate-950 p-6 rounded-2xl border border-slate-800 relative space-y-4">
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Restoran Dapur Komputer Live</h4>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                            <!-- Gudang (Storage) -->
+                            <div id="k-storage" class="p-4 bg-slate-900/80 rounded-2xl border border-amber-500/30 space-y-2">
+                                <div class="text-3xl">🏬</div>
+                                <h5 class="text-xs font-bold text-amber-300">Gudang Bahan</h5>
+                                <p class="text-[10px] text-slate-400">(Storage Device)</p>
+                                <span id="status-k-storage" class="text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400">Idle</span>
+                            </div>
+
+                            <!-- Meja Kerja (RAM) -->
+                            <div id="k-ram" class="p-4 bg-slate-900/80 rounded-2xl border border-emerald-500/30 space-y-2">
+                                <div class="text-3xl">🔪</div>
+                                <h5 class="text-xs font-bold text-emerald-300">Meja Kerja</h5>
+                                <p class="text-[10px] text-slate-400">(RAM)</p>
+                                <span id="status-k-ram" class="text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400">Kosong</span>
+                            </div>
+
+                            <!-- Koki Utama (CPU) -->
+                            <div id="k-cpu" class="p-4 bg-slate-900/80 rounded-2xl border border-blue-500/30 space-y-2">
+                                <div class="text-3xl">👨‍🍳</div>
+                                <h5 class="text-xs font-bold text-blue-300">Koki Utama</h5>
+                                <p class="text-[10px] text-slate-400">(CPU)</p>
+                                <span id="status-k-cpu" class="text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400">Santai</span>
+                            </div>
+
+                            <!-- Koki Plating (GPU) -->
+                            <div id="k-gpu" class="p-4 bg-slate-900/80 rounded-2xl border border-purple-500/30 space-y-2">
+                                <div class="text-3xl">🍽️</div>
+                                <h5 class="text-xs font-bold text-purple-300">Koki Plating</h5>
+                                <p class="text-[10px] text-slate-400">(GPU)</p>
+                                <span id="status-k-gpu" class="text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400">Santai</span>
+                            </div>
+                        </div>
+
+                        <!-- Restaurant Order Log Monitor -->
+                        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
+                            <h5 class="text-xs font-bold text-slate-300 mb-1">Catatan Koki Dapur:</h5>
+                            <p id="kitchen-log" class="text-xs font-mono text-emerald-400">Dapur siap menerima pesanan masakan...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: KUIS INTERAKTIF & TANYA AI -->
+        <section id="tab-kuis" class="hidden space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Interactive Quiz Box -->
+                <div class="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div>
+                            <span class="px-3 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-full text-xs font-semibold uppercase">
+                                Evaluasi Pemahaman
+                            </span>
+                            <h2 class="text-2xl font-extrabold text-white mt-1">Kuis Perangkat Pemrosesan</h2>
+                        </div>
+                        <div class="bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold text-emerald-400">
+                            Skor: <span id="quiz-score">0</span> / 50
+                        </div>
+                    </div>
+
+                    <!-- Quiz Questions Container -->
+                    <div id="quiz-container" class="space-y-6">
+                        <!-- Questions dynamically rendered via JS -->
+                    </div>
+
+                    <button onclick="checkQuizAnswers()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl transition-all shadow-lg">
+                        Submit & Periksa Jawaban
+                    </button>
+                </div>
+
+                <!-- Gemini AI Assistant Panel -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white text-lg">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Tanya Gemini AI Hardware</h3>
+                                <p class="text-[10px] text-slate-400">Asisten Pembelajaran Cerdas</p>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-300 mt-3">
+                            Punya pertanyaan seputar perbedaan CPU, GPU, RAM, atau SSD? Tanyakan langsung di sini!
+                        </p>
+
+                        <!-- Chat Output -->
+                        <div id="ai-chat-response" class="mt-4 p-4 bg-slate-950 border border-slate-800 rounded-2xl min-h-[160px] text-xs text-slate-300 leading-relaxed max-h-[250px] overflow-y-auto">
+                            Halo! Saya AI Tutor Hardware. Silakan ketik pertanyaanmu di bawah...
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="space-y-2 pt-2">
+                        <textarea id="ai-user-query" rows="2" placeholder="Contoh: Kenapa laptop butuh RAM 16GB untuk game?" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-purple-500 resize-none"></textarea>
+                        <button onclick="askGeminiAI()" class="w-full py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Pertanyaan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Media Pembelajaran Interaktif Hardware Komputer © 2026 — Sesuai Modul Perangkat Pemrosesan.</p>
+        </div>
+    </footer>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            const tabs = ['materi', 'simulasi', 'analogi', 'kuis'];
+            tabs.forEach(t => {
+                const section = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`btn-${t}`);
+                if (t === tabId) {
+                    section.classList.remove('hidden');
+                    btn.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+                    btn.classList.remove('text-slate-300');
+                } else {
+                    section.classList.add('hidden');
+                    btn.classList.remove('bg-blue-600', 'text-white', 'shadow-md');
+                    btn.classList.add('text-slate-300');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Speech Reader Implementation
+        let synth = window.speechSynthesis;
+        let speechUtterance = null;
+
+        function speakFullMateri() {
+            if (synth.speaking) {
+                synth.cancel();
+            }
+
+            const textToSpeak = `
+                CPU atau Central Processing Unit adalah otak komputer yang memproses instruksi dan mengolah data.
+                GPU atau Graphics Processing Unit bertugas mengolah tampilan grafis dan animasi 3D.
+                RAM adalah Random Access Memory yang menyimpan data dan program secara sementara saat digunakan.
+                Storage Device seperti SSD dan HDD menyimpan file secara permanen dalam jangka panjang.
+            `;
+
+            speechUtterance = new SpeechSynthesisUtterance(textToSpeak);
+            speechUtterance.lang = 'id-ID';
+            speechUtterance.rate = 0.95;
+            synth.speak(speechUtterance);
+            showToast("Memulai pembaca materi suara...", "info");
+        }
+
+        function stopSpeech() {
+            if (synth && synth.speaking) {
+                synth.cancel();
+                showToast("Suara dihentikan.", "info");
+            }
+        }
+
+        // Hardware Workload Simulator Logic
+        let isSimulating = false;
+
+        function startSimulation() {
+            if (isSimulating) return;
+            isSimulating = true;
+
+            const task = document.getElementById('sim-task').value;
+            const ramSize = parseInt(document.getElementById('sim-ram').value);
+            const storageType = document.getElementById('sim-storage').value;
+            const gpuType = document.getElementById('sim-gpu').value;
+
+            const barStorage = document.getElementById('bar-storage');
+            const barRam = document.getElementById('bar-ram');
+            const barCpu = document.getElementById('bar-cpu');
+            const barGpu = document.getElementById('bar-gpu');
+
+            const valStorage = document.getElementById('val-storage');
+            const valRam = document.getElementById('val-ram');
+            const valCpu = document.getElementById('val-cpu');
+            const valGpu = document.getElementById('val-gpu');
+
+            const screenOutput = document.getElementById('sim-screen-output');
+            const statusText = document.getElementById('sim-status-text');
+            const diagText = document.getElementById('sim-diagnostic-text');
+            const diagBadge = document.getElementById('sim-speed-badge');
+
+            // Reset UI bars
+            [barStorage, barRam, barCpu, barGpu].forEach(b => b.style.width = '0%');
+            statusText.innerText = "Status: Membaca dari Storage...";
+
+            // Speed multiplier based on storage
+            const delayMultiplier = storageType === 'hdd' ? 1.8 : 0.6;
+
+            // Phase 1: Storage Loading
+            setTimeout(() => {
+                barStorage.style.width = '100%';
+                valStorage.innerText = storageType === 'hdd' ? 'Read Rate: 120 MB/s (Slow HDD)' : 'Read Rate: 3500 MB/s (Fast SSD)';
+                statusText.innerText = "Status: Transfer Data ke RAM...";
+
+                // Phase 2: RAM Memory Allocation
+                setTimeout(() => {
+                    let ramLoad = 20;
+                    if (task === 'multi') ramLoad = (12 / ramSize) * 100;
+                    else if (task === 'game') ramLoad = (14 / ramSize) * 100;
+                    else if (task === 'video') ramLoad = (16 / ramSize) * 100;
+                    
+                    ramLoad = Math.min(Math.round(ramLoad), 100);
+                    barRam.style.width = `${ramLoad}%`;
+                    valRam.innerText = `Penggunaan: ${ramLoad}% (${ramSize}GB Total)`;
+
+                    statusText.innerText = "Status: Diproses CPU & GPU...";
+
+                    // Phase 3: CPU & GPU Calculation
+                    setTimeout(() => {
+                        let cpuLoad = 25;
+                        let gpuLoad = 15;
+
+                        if (task === 'multi') { cpuLoad = 65; gpuLoad = 30; }
+                        else if (task === 'game') { cpuLoad = 75; gpuLoad = gpuType === 'integrated' ? 100 : 60; }
+                        else if (task === 'video') { cpuLoad = 95; gpuLoad = gpuType === 'integrated' ? 95 : 70; }
+
+                        barCpu.style.width = `${cpuLoad}%`;
+                        valCpu.innerText = `Beban CPU: ${cpuLoad}%`;
+
+                        barGpu.style.width = `${gpuLoad}%`;
+                        valGpu.innerText = `Beban GPU: ${gpuLoad}%`;
+
+                        statusText.innerText = "Status: Berhasil Ditampilkan di Monitor!";
+
+                        // Screen Output Updates
+                        if (task === 'word') screenOutput.innerHTML = `<span class="text-emerald-400">✓ Dokumen Word Terbuka (Lancar)</span>`;
+                        else if (task === 'multi') screenOutput.innerHTML = `<span class="text-blue-400">✓ Chrome + Word + Excel Active</span>`;
+                        else if (task === 'game') screenOutput.innerHTML = `<span class="text-purple-400">🎮 Game 3D Rendered (${gpuType === 'integrated' ? '30 FPS' : '120 FPS'})</span>`;
+                        else if (task === 'video') screenOutput.innerHTML = `<span class="text-amber-400">🎬 Exporting 4K Video Timeline...</span>`;
+
+                        // Generate Diagnostic Report
+                        let diagResult = "";
+                        if (ramLoad >= 95) {
+                            diagResult += "🚨 <strong>RAM Bottleneck:</strong> Kapasitas RAM terlalu kecil untuk tugas ini! Komputer akan tersendat (lagging) karena RAM kehabisan ruang tampung sementara.<br>";
+                        }
+                        if (storageType === 'hdd') {
+                            diagResult += "⚠️ <strong>Storage Lambat:</strong> Penggunaan HDD membuat loading awal aplikasi terasa lama dibandingkan SSD.<br>";
+                        }
+                        if (task === 'game' && gpuType === 'integrated') {
+                            diagResult += "⚠️ <strong>GPU Terintegrasi Kurang Kuat:</strong> Untuk game 3D berat, GPU terintegrasi bekerja 100% maksimal yang menyebabkan patah-patah (low FPS). Disarankan GPU Dedicated.<br>";
+                        }
+                        if (diagResult === "") {
+                            diagResult = "✅ <strong>Kombinasi Sempurna!</strong> Perangkat hardware kamu sangat seimbang dan mampu menangani pekerjaan ini dengan sangat lancar tanpa kendala!";
+                            diagBadge.innerText = "Kecepatan: Sangat Cepat (Optimal)";
+                            diagBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-900 text-emerald-300";
+                        } else {
+                            diagBadge.innerText = "Kecepatan: Tersendat (Bottleneck)";
+                            diagBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-amber-900 text-amber-300";
+                        }
+
+                        diagText.innerHTML = diagResult;
+                        isSimulating = false;
+
+                    }, 800);
+
+                }, 800 * delayMultiplier);
+
+            }, 600 * delayMultiplier);
+        }
+
+        // Kitchen Analogy Simulation
+        function runKitchenOrder(orderType) {
+            const statusStorage = document.getElementById('status-k-storage');
+            const statusRam = document.getElementById('status-k-ram');
+            const statusCpu = document.getElementById('status-k-cpu');
+            const statusGpu = document.getElementById('status-k-gpu');
+            const log = document.getElementById('kitchen-log');
+
+            log.innerText = "1. Mengambil bahan masakan dari Lemari Gudang (Storage)...";
+            statusStorage.innerText = "Mengambil File";
+            statusStorage.className = "text-[10px] block px-2 py-0.5 rounded bg-amber-900 text-amber-200";
+
+            setTimeout(() => {
+                log.innerText = "2. Menaruh bahan masakan di Meja Kerja Koki (RAM)...";
+                statusStorage.innerText = "Idle";
+                statusStorage.className = "text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400";
+                
+                statusRam.innerText = "Menampung Bahan";
+                statusRam.className = "text-[10px] block px-2 py-0.5 rounded bg-emerald-900 text-emerald-200";
+
+                setTimeout(() => {
+                    log.innerText = "3. Koki Utama (CPU) meracik & mengolah instruksi resep...";
+                    statusCpu.innerText = "Memasak Aktif";
+                    statusCpu.className = "text-[10px] block px-2 py-0.5 rounded bg-blue-900 text-blue-200";
+
+                    setTimeout(() => {
+                        if (orderType === 'game' || orderType === 'video') {
+                            log.innerText = "4. Koki Khusus Plating (GPU) menghias tampilan piring 3D secara detail...";
+                            statusGpu.innerText = "Menghias Grafis 3D";
+                            statusGpu.className = "text-[10px] block px-2 py-0.5 rounded bg-purple-900 text-purple-200 animate-pulse";
+                        } else {
+                            log.innerText = "4. Koki Plating (GPU) menyajikan tampilan piring standar...";
+                            statusGpu.innerText = "Penyajian Standar";
+                            statusGpu.className = "text-[10px] block px-2 py-0.5 rounded bg-purple-900 text-purple-200";
+                        }
+
+                        setTimeout(() => {
+                            log.innerText = "✅ Pesanan siap dihidangkan ke meja pelanggan (Monitor)!";
+                            statusRam.innerText = "Kosong";
+                            statusRam.className = "text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400";
+                            statusCpu.innerText = "Santai";
+                            statusCpu.className = "text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400";
+                            statusGpu.innerText = "Santai";
+                            statusGpu.className = "text-[10px] block px-2 py-0.5 rounded bg-slate-800 text-slate-400";
+                        }, 1200);
+
+                    }, 1000);
+
+                }, 1000);
+
+            }, 800);
+        }
+
+        // Quiz Data
+        const quizQuestions = [
+            {
+                id: 1,
+                question: "Komponen komputer yang sering disebut sebagai 'otak komputer' untuk memproses instruksi adalah...",
+                options: ["GPU", "RAM", "CPU", "HDD"],
+                correct: 2,
+                explanation: "CPU (Central Processing Unit) adalah otak komputer yang memproses semua instruksi dan mengolah data."
+            },
+            {
+                id: 2,
+                question: "Perangkat yang dirancang khusus untuk memproses dan menghasilkan tampilan grafis serta animasi 3D adalah...",
+                options: ["CPU", "GPU", "SSD", "Flashdisk"],
+                correct: 1,
+                explanation: "GPU (Graphics Processing Unit) dirancang khusus memproses grafis, game 3D, dan editing video."
+            },
+            {
+                id: 3,
+                question: "Sifat memori RAM yang datanya akan hilang saat komputer dimatikan disebut...",
+                options: ["Volatile", "Non-volatile", "Permanent", "Storage"],
+                correct: 0,
+                explanation: "RAM bersifat sementara (volatile), artinya data tersimpan hanya saat komputer hidup."
+            },
+            {
+                id: 4,
+                question: "Media penyimpanan yang menggunakan memori flash tanpa piringan berputar dan lebih cepat dari HDD adalah...",
+                options: ["Hard Disk Drive (HDD)", "Solid State Drive (SSD)", "RAM", "CD-ROM"],
+                correct: 1,
+                explanation: "SSD menggunakan memori flash sehingga proses membaca dan menulis data jauh lebih cepat dari HDD."
+            },
+            {
+                id: 5,
+                question: "Dalam analogi dapur restoran, RAM berperan sebagai...",
+                options: ["Koki Utama", "Koki Penyajian", "Meja Kerja Koki", "Lemari Gudang"],
+                correct: 2,
+                explanation: "RAM dianalogikan sebagai meja kerja tempat menaruh bahan masakan yang sedang aktif diolah."
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizQuestions.map((q, idx) => `
+                <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/60 space-y-3">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center">${idx + 1}</span>
+                        ${q.question}
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                        ${q.options.map((opt, oIdx) => `
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer hover:border-slate-700 transition-all text-xs text-slate-300">
+                                <input type="radio" name="quiz-${q.id}" value="${oIdx}" class="text-blue-600 focus:ring-0">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="quiz-exp-${q.id}" class="hidden p-3 rounded-xl bg-blue-950/40 border border-blue-800 text-xs text-blue-200">
+                        💡 <strong>Penjelasan:</strong> ${q.explanation}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function checkQuizAnswers() {
+            let score = 0;
+            quizQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="quiz-${q.id}"]:checked`);
+                const expBox = document.getElementById(`quiz-exp-${q.id}`);
+                expBox.classList.remove('hidden');
+
+                if (selected && parseInt(selected.value) === q.correct) {
+                    score += 10;
+                }
+            });
+
+            document.getElementById('quiz-score').innerText = score;
+            showToast(`Kuis Selesai! Skor kamu: ${score}/50`, score >= 30 ? "success" : "warning");
+        }
+
+        // Gemini AI Integration
+        async function askGeminiAI() {
+            const inputEl = document.getElementById('ai-user-query');
+            const responseEl = document.getElementById('ai-chat-response');
+            const query = inputEl.value.trim();
+
+            if (!query) {
+                showToast("Tuliskan pertanyaanmu terlebih dahulu!", "warning");
+                return;
+            }
+
+            responseEl.innerHTML = `<span class="text-purple-400 flex items-center gap-2"><i class="fa-solid fa-spinner animate-spin"></i> Gemini AI sedang berpikir & menyusun jawaban...</span>`;
+
+            const systemPrompt = "Kamu adalah guru ilmu komputer yang ramah dan ahli menjelaskan komponen hardware komputer (CPU, GPU, RAM, Storage HDD/SSD) kepada siswa sekolah dengan sederhana, jelas, dan akurat.";
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: query }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            try {
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "Maaf, terjadi masalah saat mengambil jawaban dari AI.";
+                responseEl.innerHTML = answer.replace(/\n/g, '<br>');
+                inputEl.value = "";
+            } catch (err) {
+                responseEl.innerHTML = `<span class="text-rose-400">Gagal terhubung ke Gemini AI API. Pastikan koneksi internet lancar.</span>`;
+            }
+        }
+
+        // Toast Helper
+        function showToast(msg, type = "info") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            let bg = "bg-slate-800 border-slate-700 text-white";
+            if (type === "success") bg = "bg-emerald-900 border-emerald-700 text-emerald-100";
+            if (type === "warning") bg = "bg-amber-900 border-amber-700 text-amber-100";
+
+            toast.className = `p-4 rounded-xl border ${bg} shadow-xl text-xs font-semibold transition-all duration-300 pointer-events-auto`;
+            toast.innerText = msg;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize on window load
+        window.onload = function() {
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>
